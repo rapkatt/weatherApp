@@ -15,14 +15,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var weatherDescription: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
-    @IBOutlet weak var imageIconImageView: UIImageView!
+    @IBOutlet weak var windLabel: UILabel!
+    @IBOutlet weak var feelsLikeLabel: UILabel!
+    @IBOutlet weak var humidityLabel: UILabel!
+    
     let locationManager = CLLocationManager()
     var weatherData = WeatherData()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
         startLocationManager()
     }
     
@@ -39,9 +40,10 @@ class ViewController: UIViewController {
     
     func updateView(){
         cityNameLabel.text = weatherData.name
-        weatherDescription.text = DataSource.weatherIDs[weatherData.weather[0].id]
         temperatureLabel.text = weatherData.main.temp.description + "º"
-        imageIconImageView.image = UIImage(named: weatherData.weather[0].icon)
+        feelsLikeLabel.text = weatherData.main.feels_like.description + "º"
+        humidityLabel.text = weatherData.main.humidity.description + "%"
+        windLabel.text = weatherData.wind.speed.description + " km/h"
     }
     
     func updateWeatherInfo(latitude: Double, longtitude: Double){

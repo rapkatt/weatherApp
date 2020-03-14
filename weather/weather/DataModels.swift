@@ -19,10 +19,18 @@ struct Main: Codable {
     var temp: Double = 0.0
     var pressure: Int = 0
     var humidity: Int = 0
+    var feels_like: Double = 0.0
+    
+    
+}
+
+struct Wind: Codable {
+    var speed:Int = 0
 }
 
 struct WeatherData: Codable {
     var weather: [Weather] = []
     var main: Main = Main()
     var name: String = ""
+    var wind: Wind = Wind()
 }
