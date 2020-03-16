@@ -14,6 +14,8 @@
 		AE2A751D241A5DEB00CD7905 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE2A751C241A5DEB00CD7905 /* Assets.xcassets */; };
 		AE2A7520241A5DEB00CD7905 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE2A751E241A5DEB00CD7905 /* LaunchScreen.storyboard */; };
 		AE2A7529241B476D00CD7905 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A7528241B476D00CD7905 /* DataModels.swift */; };
+		AE2A7530241E0F5E00CD7905 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A752F241E0F5E00CD7905 /* DataSource.swift */; };
+		AE2A7532241F922400CD7905 /* NextDaysModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A7531241F922400CD7905 /* NextDaysModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		AE2A751F241A5DEB00CD7905 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AE2A7521241A5DEB00CD7905 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE2A7528241B476D00CD7905 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
+		AE2A752F241E0F5E00CD7905 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		AE2A7531241F922400CD7905 /* NextDaysModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextDaysModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,8 @@
 			isa = PBXGroup;
 			children = (
 				AE2A7528241B476D00CD7905 /* DataModels.swift */,
+				AE2A752F241E0F5E00CD7905 /* DataSource.swift */,
+				AE2A7531241F922400CD7905 /* NextDaysModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -168,6 +174,8 @@
 				AE2A7518241A5DE800CD7905 /* ViewController.swift in Sources */,
 				AE2A7529241B476D00CD7905 /* DataModels.swift in Sources */,
 				AE2A7514241A5DE800CD7905 /* AppDelegate.swift in Sources */,
+				AE2A7532241F922400CD7905 /* NextDaysModel.swift in Sources */,
+				AE2A7530241E0F5E00CD7905 /* DataSource.swift in Sources */,
 				AE2A7516241A5DE800CD7905 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

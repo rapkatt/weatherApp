@@ -33,4 +33,6 @@ struct WeatherData: Codable {
     var main: Main = Main()
     var name: String = ""
     var wind: Wind = Wind()
+    var dt:Int?
+    var dt_txt:String?
 }

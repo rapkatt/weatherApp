@@ -10,7 +10,10 @@ import UIKit
 import CoreLocation
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UICollectionViewDelegate,
+UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
+   
+    
     
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var weatherDescription: UILabel!
@@ -18,6 +21,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var windLabel: UILabel!
     @IBOutlet weak var feelsLikeLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
+    @IBOutlet weak var currentDayLabel: UILabel!
+    
+    @IBOutlet weak var collectionViewLabel: UICollectionView!
     
     let locationManager = CLLocationManager()
     var weatherData = WeatherData()
@@ -25,6 +31,20 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         startLocationManager()
+    }
+   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as!
+        NextDaysModel
+        
+        cell.weekDayLabel.text = weatherData.dt?.description
+        cell.tempDayLabel.text = weatherData.main.temp.description
+        
+        return cell
     }
     
     func startLocationManager(){
@@ -40,11 +60,14 @@ class ViewController: UIViewController {
     
     func updateView(){
         cityNameLabel.text = weatherData.name
+        weatherDescription.text = DataSource.weatherIDs[weatherData.weather[0].id]
         temperatureLabel.text = weatherData.main.temp.description + "º"
         feelsLikeLabel.text = weatherData.main.feels_like.description + "º"
         humidityLabel.text = weatherData.main.humidity.description + "%"
         windLabel.text = weatherData.wind.speed.description + " km/h"
+        currentDayLabel.text = weatherData.dt?.description
     }
+    
     
     func updateWeatherInfo(latitude: Double, longtitude: Double){
         let session = URLSession.shared
