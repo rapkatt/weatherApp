@@ -35,4 +35,17 @@ struct WeatherData: Codable {
     var wind: Wind = Wind()
     var dt:Int?
     var dt_txt:String?
+    var pod:Pod?
+}
+
+struct Pod:Codable {
+    var pod:String?
+}
+
+struct PredictWeather: Codable {
+    var list: [List]?
+}
+
+struct List:Codable {
+    var list:[WeatherData]
 }
