@@ -13,13 +13,14 @@ struct Weather: Codable {
     var main: String
     var description: String
     var icon: String
+   //  var dt:Int?
 }
 
 struct Main: Codable {
-    var temp: Double = 0.0
-    var pressure: Int = 0
-    var humidity: Int = 0
-    var feels_like: Double = 0.0
+    var temp: Double
+    var pressure: Int
+    var humidity: Int
+    var feels_like: Double
     
     
 }
@@ -30,11 +31,10 @@ struct Wind: Codable {
 
 struct WeatherData: Codable {
     var weather: [Weather] = []
-    var main: Main = Main()
+    var main: Main
     var name: String = ""
     var wind: Wind = Wind()
     var dt:Int?
-    var dt_txt:String?
     var pod:Pod?
 }
 
@@ -42,10 +42,23 @@ struct Pod:Codable {
     var pod:String?
 }
 
-struct PredictWeather: Codable {
-    var list: [List]?
+//struct Welcome: Codable {
+//    var list: [List]?
+//    var dt_txt: String?
+//
+//}
+
+class List: Codable {
+    var list: [WeatherItem]?
 }
 
-struct List:Codable {
-    var list:[WeatherData]
+struct Main2: Codable {
+    var temp: Double = 0.0
+}
+
+struct WeatherItem: Codable {
+    var weather: [Weather]?
+    var main: Main?
+    var dt_txt: String?
+    
 }

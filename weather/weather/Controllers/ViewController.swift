@@ -12,7 +12,7 @@ import Alamofire
 
 class ViewController: UIViewController,UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
-   
+    
     
     
     @IBOutlet weak var cityNameLabel: UILabel!
@@ -23,43 +23,52 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
     @IBOutlet weak var humidityLabel: UILabel!
     @IBOutlet weak var currentDayLabel: UILabel!
     
+    @IBOutlet weak var imageLabel: UIImageView!
     @IBOutlet var background: UIView!
     @IBOutlet weak var collectionViewLabel: UICollectionView!
     
     let locationManager = CLLocationManager()
-    var weatherData = WeatherData()
-    var list = PredictWeather()
+    var weatherData: WeatherData?
+    var list: List?
+    //    var list2 = Welcome()
     var chekerDayorNight = ""
     var date: Int = 1584446400
-    
+    var temperatureDay : [WeatherItem] = []
+    var temperatureNight: [WeatherItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         startLocationManager()
         UpdateDayorNight()
     }
-   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       return 5
-   }
-   
-   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       
-       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! NextDaysModel
-       
-    
-        cell.weekDayLabel.text = date.week(indexPath.row)
-
-       
-       return cell
-   }
-    
-    func up(info:List){
-        self.date = info.list[0].dt!
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! NextDaysModel
+
+        if temperatureDay.isEmpty {
+            return cell
+        }
+        cell.weekDayLabel.text = date.week(indexPath.row)
+        cell.tempDayLabel.text = (Int(temperatureDay[indexPath.row].main!.temp)).description
+        cell.tempNightLabel.text = (Int(temperatureNight[indexPath.row].main!.temp)).description
         
         
+        return cell
+    }
+    
+    func updateTemp(){
+        for i in (list?.list!)! {
+            if i.dt_txt!.suffix(8) == "12:00:00"{
+                self.temperatureDay.append(i)
+            }else if i.dt_txt!.suffix(8) == "00:00:00"{
+                self.temperatureNight.append(i)
+            }
+        }
+        collectionViewLabel.reloadData()
     }
     
     func startLocationManager(){
@@ -74,13 +83,14 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
     }
     
     func updateView(){
-        cityNameLabel.text = weatherData.name
-        weatherDescription.text = DataSource.weatherIDs[weatherData.weather[0].id]
-        temperatureLabel.text = weatherData.main.temp.description + "º"
-        feelsLikeLabel.text = weatherData.main.feels_like.description + "º"
-        humidityLabel.text = weatherData.main.humidity.description + "%"
-        windLabel.text = weatherData.wind.speed.description + " km/h"
-        currentDayLabel.text = weatherData.dt?.week(0)
+        cityNameLabel.text = weatherData?.name
+        weatherDescription.text = DataSource.weatherIDs[(weatherData?.weather[0].id)!]
+        temperatureLabel.text = (Int((weatherData?.main.temp)!)).description + "º"
+        feelsLikeLabel.text = (Int((weatherData?.main.feels_like)!)).description + "º"
+        humidityLabel.text = (weatherData?.main.humidity.description)! + "%"
+        windLabel.text = (weatherData?.wind.speed.description)! + " km/h"
+        currentDayLabel.text = weatherData?.dt?.week(0)
+        imageLabel.image = UIImage(named: (weatherData?.weather[0].icon)!)
     }
     
     
@@ -104,32 +114,32 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
         task.resume()
     }
     
-
-    func predictWeather( latitude: Double, longtitude: Double,completion:  @escaping (List)->()){
-        
-        let jsonUrlString = "http://api.openweathermap.org/data/2.5/forecast?lat=\(latitude.description)&lon=\(longtitude.description)&units=metric&APPID=b02ed43b351c5a197dde4d6a0a50c53c"
-        
-        guard let url = URL(string: jsonUrlString) else { return }
-      
-        AF.request(url).validate().responseJSON { (response) in
-            let result = response.data
-            
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .secondsSince1970
-                let info = try decoder.decode(List.self, from: result!)
+    
+    
+    func predictWeather(latitude: Double, longtitude: Double){
+        let session = URLSession.shared
+        let url = URL(string: "http://api.openweathermap.org/data/2.5/forecast?lat=\(latitude.description)&lon=\(longtitude.description)&units=metric&APPID=b02ed43b351c5a197dde4d6a0a50c53c")!
+        let task = session.dataTask(with: url) { (data, respose, error) in
+            guard error == nil else{
+                print("DataTask error \(error!.localizedDescription)")
+                return
+            }
+            do{
+                let data = try JSONDecoder().decode(List.self, from: data!)
                 
                 DispatchQueue.main.async {
-                    completion(info)
+                    self.list = data
+                    self.collectionViewLabel.reloadData()
+                    self.updateTemp()
                 }
-            } catch let jsonErr {
-                print("Error serializing json:", jsonErr)
+            }catch{
+                print(error.localizedDescription)
             }
         }
+        task.resume()
     }
     func UpdateDayorNight(){
-        chekerDayorNight = weatherData.pod?.pod?.description ?? "d"
+        chekerDayorNight = weatherData?.pod?.pod?.description ?? "d"
         
         if chekerDayorNight == "d" {
             chekerDayorNight = "d"
@@ -139,13 +149,13 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
             background.backgroundColor = UIColor(red: 0/255, green: 97/255, blue: 158/255, alpha: 1.0)
         }
     }
-
+    
 }
 extension ViewController:CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last{
             updateWeatherInfo(latitude: lastLocation.coordinate.latitude, longtitude: lastLocation.coordinate.longitude)
-            print(lastLocation.coordinate.latitude,lastLocation.coordinate.longitude)
+            predictWeather(latitude: lastLocation.coordinate.latitude, longtitude: lastLocation.coordinate.longitude)
         }
     }
 }
@@ -167,7 +177,7 @@ func weekMaker(unixTime: Double, timeZone: String = "Kyrgyzstan/Bishkek", offset
         if let kg = TimeZone(identifier: timeZone) {
             cal.timeZone = kg
         }
-    
+        
         let weekday = (cal.component(.weekday, from: time) + offset - 1) % 7
         
         return Calendar.current.weekdaySymbols[weekday]

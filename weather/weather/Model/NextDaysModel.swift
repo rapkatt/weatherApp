@@ -14,4 +14,5 @@ class NextDaysModel: UICollectionViewCell {
     
     @IBOutlet weak var tempDayLabel: UILabel!
     
+    @IBOutlet weak var tempNightLabel: UILabel!
 }
