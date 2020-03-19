@@ -17,7 +17,8 @@
 		AE2A7529241B476D00CD7905 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A7528241B476D00CD7905 /* DataModels.swift */; };
 		AE2A7530241E0F5E00CD7905 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A752F241E0F5E00CD7905 /* DataSource.swift */; };
 		AE2A7532241F922400CD7905 /* NextDaysModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A7531241F922400CD7905 /* NextDaysModel.swift */; };
-		AE9DB58F2422271F008AAE30 /* secondModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9DB58E2422271F008AAE30 /* secondModel.swift */; };
+		AE2D18D42423604600167BA1 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2D18D32423604600167BA1 /* Server.swift */; };
+		AE2D18DA24236BD600167BA1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2D18D924236BD600167BA1 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +35,8 @@
 		AE2A7528241B476D00CD7905 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
 		AE2A752F241E0F5E00CD7905 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		AE2A7531241F922400CD7905 /* NextDaysModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextDaysModel.swift; sourceTree = "<group>"; };
-		AE9DB58E2422271F008AAE30 /* secondModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = secondModel.swift; sourceTree = "<group>"; };
+		AE2D18D32423604600167BA1 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		AE2D18D924236BD600167BA1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		FD833B7B95D52748404F1091 /* Pods_weather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_weather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -88,6 +90,8 @@
 		AE2A7512241A5DE800CD7905 /* weather */ = {
 			isa = PBXGroup;
 			children = (
+				AE2D18D824236BC100167BA1 /* Extensions */,
+				AE2D18D22423602400167BA1 /* ServerSide */,
 				AE2A752E241D13AC00CD7905 /* Model */,
 				AE2A752D241D133E00CD7905 /* Deleagates */,
 				AE2A752C241D131700CD7905 /* Controllers */,
@@ -122,9 +126,24 @@
 				AE2A7528241B476D00CD7905 /* DataModels.swift */,
 				AE2A752F241E0F5E00CD7905 /* DataSource.swift */,
 				AE2A7531241F922400CD7905 /* NextDaysModel.swift */,
-				AE9DB58E2422271F008AAE30 /* secondModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		AE2D18D22423602400167BA1 /* ServerSide */ = {
+			isa = PBXGroup;
+			children = (
+				AE2D18D32423604600167BA1 /* Server.swift */,
+			);
+			path = ServerSide;
+			sourceTree = "<group>";
+		};
+		AE2D18D824236BC100167BA1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AE2D18D924236BD600167BA1 /* Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,10 +264,11 @@
 				AE2A7518241A5DE800CD7905 /* ViewController.swift in Sources */,
 				AE2A7529241B476D00CD7905 /* DataModels.swift in Sources */,
 				AE2A7514241A5DE800CD7905 /* AppDelegate.swift in Sources */,
+				AE2D18DA24236BD600167BA1 /* Extensions.swift in Sources */,
 				AE2A7532241F922400CD7905 /* NextDaysModel.swift in Sources */,
 				AE2A7530241E0F5E00CD7905 /* DataSource.swift in Sources */,
 				AE2A7516241A5DE800CD7905 /* SceneDelegate.swift in Sources */,
-				AE9DB58F2422271F008AAE30 /* secondModel.swift in Sources */,
+				AE2D18D42423604600167BA1 /* Server.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

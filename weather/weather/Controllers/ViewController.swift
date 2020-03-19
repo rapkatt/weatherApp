@@ -28,10 +28,10 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
     @IBOutlet weak var collectionViewLabel: UICollectionView!
     
     let locationManager = CLLocationManager()
-    var weatherData: WeatherData?
+    
     var list: List?
-    //    var list2 = Welcome()
     var chekerDayorNight = ""
+    var weatherData: WeatherData?
     var date: Int = 1584446400
     var temperatureDay : [WeatherItem] = []
     var temperatureNight: [WeatherItem] = []
@@ -41,6 +41,8 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
         startLocationManager()
         UpdateDayorNight()
     }
+    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 5
     }
@@ -48,7 +50,7 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! NextDaysModel
-
+        
         if temperatureDay.isEmpty {
             return cell
         }
@@ -60,8 +62,8 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
         return cell
     }
     
-    func updateTemp(){
-        for i in (list?.list!)! {
+    func updateTemp(list:List){
+        for i in (list.list!) {
             if i.dt_txt!.suffix(8) == "12:00:00"{
                 self.temperatureDay.append(i)
             }else if i.dt_txt!.suffix(8) == "00:00:00"{
@@ -82,62 +84,18 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
         }
     }
     
-    func updateView(){
-        cityNameLabel.text = weatherData?.name
-        weatherDescription.text = DataSource.weatherIDs[(weatherData?.weather[0].id)!]
-        temperatureLabel.text = (Int((weatherData?.main.temp)!)).description + "º"
-        feelsLikeLabel.text = (Int((weatherData?.main.feels_like)!)).description + "º"
-        humidityLabel.text = (weatherData?.main.humidity.description)! + "%"
-        windLabel.text = (weatherData?.wind.speed.description)! + " km/h"
-        currentDayLabel.text = weatherData?.dt?.week(0)
-        imageLabel.image = UIImage(named: (weatherData?.weather[0].icon)!)
+    func updateView(weatherData: WeatherData){
+        
+        cityNameLabel.text = weatherData.name
+        weatherDescription.text = DataSource.weatherIDs[(weatherData.weather[0].id)]
+        temperatureLabel.text = (Int((weatherData.main.temp))).description + "º"
+        feelsLikeLabel.text = (Int((weatherData.main.feels_like))).description + "º"
+        humidityLabel.text = (weatherData.main.humidity.description) + "%"
+        windLabel.text = (weatherData.wind.speed.description) + " km/h"
+        currentDayLabel.text = weatherData.dt?.week(0)
+        imageLabel.image = UIImage(named: (weatherData.weather[0].icon))
     }
     
-    
-    func updateWeatherInfo(latitude: Double, longtitude: Double){
-        let session = URLSession.shared
-        let url = URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(latitude.description)&lon=\(longtitude.description)&units=metric&APPID=b02ed43b351c5a197dde4d6a0a50c53c")!
-        let task = session.dataTask(with: url) { (data, respose, error) in
-            guard error == nil else{
-                print("DataTask error \(error!.localizedDescription)")
-                return
-            }
-            do{
-                self.weatherData = try JSONDecoder().decode(WeatherData.self, from: data!)
-                DispatchQueue.main.async {
-                    self.updateView()
-                }
-            }catch{
-                print(error.localizedDescription)
-            }
-        }
-        task.resume()
-    }
-    
-    
-    
-    func predictWeather(latitude: Double, longtitude: Double){
-        let session = URLSession.shared
-        let url = URL(string: "http://api.openweathermap.org/data/2.5/forecast?lat=\(latitude.description)&lon=\(longtitude.description)&units=metric&APPID=b02ed43b351c5a197dde4d6a0a50c53c")!
-        let task = session.dataTask(with: url) { (data, respose, error) in
-            guard error == nil else{
-                print("DataTask error \(error!.localizedDescription)")
-                return
-            }
-            do{
-                let data = try JSONDecoder().decode(List.self, from: data!)
-                
-                DispatchQueue.main.async {
-                    self.list = data
-                    self.collectionViewLabel.reloadData()
-                    self.updateTemp()
-                }
-            }catch{
-                print(error.localizedDescription)
-            }
-        }
-        task.resume()
-    }
     func UpdateDayorNight(){
         chekerDayorNight = weatherData?.pod?.pod?.description ?? "d"
         
@@ -151,35 +109,17 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
     }
     
 }
+
 extension ViewController:CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last{
-            updateWeatherInfo(latitude: lastLocation.coordinate.latitude, longtitude: lastLocation.coordinate.longitude)
-            predictWeather(latitude: lastLocation.coordinate.latitude, longtitude: lastLocation.coordinate.longitude)
+            
+            Servers.shared.updateWeatherInfo(latitude: lastLocation.coordinate.latitude, longtitude: lastLocation.coordinate.longitude, completion: updateView(weatherData:) )
+            
+            Servers.shared.predictWeather(latitude: lastLocation.coordinate.latitude, longtitude: lastLocation.coordinate.longitude,completion: updateTemp(list:))
+            
         }
     }
 }
 
-extension Int {
-    
-    func week(_ offset: Int) -> String {
-        return weekMaker(unixTime: Double(self), offset: offset)
-    }
-    
-}
 
-func weekMaker(unixTime: Double, timeZone: String = "Kyrgyzstan/Bishkek", offset: Int) -> String {
-    if(timeZone == "" || unixTime == 0.0) {
-        return ""
-    } else {
-        let time = Date(timeIntervalSince1970: unixTime)
-        var cal = Calendar(identifier: .gregorian)
-        if let kg = TimeZone(identifier: timeZone) {
-            cal.timeZone = kg
-        }
-        
-        let weekday = (cal.component(.weekday, from: time) + offset - 1) % 7
-        
-        return Calendar.current.weekdaySymbols[weekday]
-    }
-}
