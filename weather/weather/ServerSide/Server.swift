@@ -44,9 +44,6 @@ func predictWeather(latitude: Double, longtitude: Double,completion: @escaping (
             let data = try JSONDecoder().decode(List.self, from: data!)
 
             DispatchQueue.main.async {
-//                self.list = data
-//                self.collectionViewLabel.reloadData()
-//                self.updateTemp()
                 completion(data)
             }
         }catch{

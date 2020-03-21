@@ -60,5 +60,6 @@ struct WeatherItem: Codable {
     var weather: [Weather]?
     var main: Main?
     var dt_txt: String?
+    var dt:Int?
     
 }

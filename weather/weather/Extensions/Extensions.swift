@@ -31,3 +31,4 @@ func weekMaker(unixTime: Double, timeZone: String = "Kyrgyzstan/Bishkek", offset
         return Calendar.current.weekdaySymbols[weekday]
     }
 }
+

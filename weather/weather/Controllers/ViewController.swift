@@ -32,7 +32,7 @@ UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
     var list: List?
     var chekerDayorNight = ""
     var weatherData: WeatherData?
-    var date: Int = 1584446400
+    var date: Int = 1584619200
     var temperatureDay : [WeatherItem] = []
     var temperatureNight: [WeatherItem] = []
     
